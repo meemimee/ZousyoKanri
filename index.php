@@ -11,7 +11,7 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <title>ログインページ</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/style.css">
     <!-- JavaScriptの追加 -->
     <script>
     function showRegisterForm() {
