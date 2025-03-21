@@ -77,7 +77,7 @@ $email = $escaped["email"];
 $password = password_hash($escaped["password"], PASSWORD_DEFAULT);
 
 // データベースに登録
-$sql = "INSERT INTO users (name, email, password) VALUES (?, ?, ?)";
+$sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("sss", $username, $email, $password);
 
