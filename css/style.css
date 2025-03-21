@@ -40,12 +40,13 @@ h1 {
 button {
     width: 100%;
     padding: 12px;
-    background-color: #007BFF;
+    background-color: #a9c6e4;
     border: none;
     border-radius: 3px;
     color: #ffffff;
     font-size: 16px;
     cursor: pointer;
+    margin-bottom: auto;
 }
 
 button:hover {
