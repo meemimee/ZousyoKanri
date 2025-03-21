@@ -24,7 +24,7 @@ if ($result->num_rows === 1) {
         $_SESSION['email'] = $user['email'];
         
         // マイページへリダイレクト
-        header("Location: ../pages/mypage.php");
+        header("Location: ../pages/top.php");
         exit;
     } else {
         // パスワード不一致
