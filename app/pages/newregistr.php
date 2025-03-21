@@ -6,6 +6,9 @@ error_reporting(E_ALL);
 // セッション開始
 session_start();
 include '../includes/connect.php'; 
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="ja">
