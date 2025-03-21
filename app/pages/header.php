@@ -3,7 +3,7 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-// セッション開始（必要な場合）
+// セッション開始（必要かわからんけどイランきがする）
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -56,11 +56,11 @@ if (session_status() == PHP_SESSION_NONE) {
 </head>
 <body>
     <header class="header">
-        <a href="/zoushokanri/index.php" class="logo">ワシボン</a>
+        <a href="/zoushokanri/app/pages/top.php" class="logo">ワシボン</a>
         <div class="nav-buttons">
                 <a href="/zoushokanri/app/pages/mypage.php" class="nav-button">マイページ</a>
                 <a href="/zoushokanri/app/date/logout_process.php" class="nav-button">ログアウト</a>
         </div>
     </header>
     <div class="content">
-        <!-- ここからコンテンツ -->
+        <!-- こっからコンテンツ -->
