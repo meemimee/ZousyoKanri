@@ -3,13 +3,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 
 // ログインチェック
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+require_once '../date/auth.php';
 
 // データベース接続
 include '../includes/connect.php';
@@ -48,7 +46,7 @@ include 'header.php';
                 <h2>会員情報</h2>
                 <p><strong>お名前：</strong> <?php echo htmlspecialchars($user_data['username']); ?></p>
                 <p><strong>メールアドレス：</strong> <?php echo htmlspecialchars($user_data['email']); ?></p>
-                <a href="edit_profile.php" class="nav-button">会員情報を編集</a>
+                <a href="edit_profile.php" class="nav-button" >会員情報を編集</a>
             </div>
         </div>
 

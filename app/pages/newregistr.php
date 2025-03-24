@@ -25,7 +25,7 @@ unset($_SESSION['old_input']);
 <head>
     <meta charset="UTF-8">
     <title>登録する</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="/zoushokanri/css/style.css">
 </head>
 <body>
     <div class="register-container">
@@ -43,7 +43,7 @@ unset($_SESSION['old_input']);
             <!-- CSRFトークンを追加 -->
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             
-            <div class="username">
+            <div class="input-group">
                 <label for="username">お名前</label>
                 <input type="text" id="username" name="username" value="<?php echo isset($old_input['username']) ? htmlspecialchars($old_input['username']) : ''; ?>" required>
             </div>

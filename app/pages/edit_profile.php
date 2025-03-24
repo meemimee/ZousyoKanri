@@ -3,13 +3,11 @@
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
+
 session_start();
 
-// ログインチェック
-if (!isset($_SESSION['user_id'])) {
-    header("Location: login.php");
-    exit;
-}
+//ログイン済み？？
+require_once '../date/auth.php';
 
 // データベース接続
 include '../includes/connect.php';
