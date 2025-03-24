@@ -12,13 +12,6 @@ session_start();
     <meta charset="UTF-8">
     <title>My Books 〜ワシボン〜</title>
     <link rel="stylesheet" href="css/style.css">
-    <!-- JavaScriptの追加 -->
-    <script>
-    function showRegisterForm() {
-        document.getElementById('registerForm').style.display = 'block';
-        document.getElementById('registerButton').style.display = 'none';
-    }
-    </script>
 </head>
 <body>
     <div class="login-container">

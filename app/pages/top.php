@@ -15,7 +15,7 @@ include 'header.php';
 </head>
 <body>
     <div class="login-container">
-        <h1>ワシボン</h1>
+        <h1>蔵書管理</h1>
 
     </div>
 </body>

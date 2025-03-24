@@ -65,6 +65,15 @@ button:hover {
     text-decoration: underline;
 }
 
+.btn-secondary{
+    width: 300px;
+    text-align: center;
+    margin-top: 20px;
+    color: #007BFF;
+    text-decoration: none;
+}
+
+
 form-group {
     margin-bottom: 20px;
 }

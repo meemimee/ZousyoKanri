@@ -4,22 +4,41 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 session_start();
-//これはへっだー
-include 'header.php';
 
-// ユーザーデータ取ってくる
-//include '../functions/user_get.php';
+// ログインチェック
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// データベース接続
+include '../includes/connect.php';
 
 // ユーザーデータを取得
-//$user_data = getUserData($_SESSION['user_id'], $conn);
+$sql = "SELECT * FROM users WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $_SESSION['user_id']);
+$stmt->execute();
+$result = $stmt->get_result();
 
+if ($result->num_rows === 1) {
+    $user_data = $result->fetch_assoc();
+} else {
+    // ユーザーが見つからない場合の処理
+    session_destroy();
+    header("Location: /zoushokanri/app/date/login_processe.php");
+    exit;
+}
+
+//これはへっだー
+include 'header.php';
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>会員情報</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="/zoushokanri/css/style.css">
 </head>
 <body>
     <div class="login-container">
@@ -27,14 +46,13 @@ include 'header.php';
         <div class="mypage-content">
             <div class="user-info">
                 <h2>会員情報</h2>
-                <p><strong>お名前：</strong> 
-                <p><strong>メールアドレス：</strong> 
-                <a href="edit_profile.php" class="btn btn-secondary">会員情報を編集</a>
+                <p><strong>お名前：</strong> <?php echo htmlspecialchars($user_data['username']); ?></p>
+                <p><strong>メールアドレス：</strong> <?php echo htmlspecialchars($user_data['email']); ?></p>
+                <a href="edit_profile.php" class="nav-button">会員情報を編集</a>
             </div>
-
+        </div>
 
         <a href="/zoushokanri/app/date/logout_process.php" class="nav-button">ログアウト</a>
-
     </div>
 </body>
 </html>
