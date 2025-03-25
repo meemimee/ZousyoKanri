@@ -47,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["username"])) {
             $error_message["username"] = "お名前を入力してください";
         } else {
-            $username = htmlspecialchars($_POST["username"], ENT_QUOTES, "UTF-8");
+            $username = $_POST["username"];
         }
         
         // メールアドレスの検証
@@ -56,7 +56,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
             $error_message["email"] = "有効なメールアドレスを入力してください";
         } else {
-            $email = htmlspecialchars($_POST["email"], ENT_QUOTES, "UTF-8");
+            $email = $_POST["email"];
             
             // 他のユーザーと重複していないか確認（自分自身は除く）
             $check_email = "SELECT * FROM users WHERE email = ? AND id != ?";
