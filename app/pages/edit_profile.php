@@ -39,96 +39,89 @@ if ($result->num_rows === 1) {
 
 // フォームが送信された場合の処理
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-       // CSRFトークンの検証
-       if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    // CSRFトークンの検証
+    if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
         $error_message["csrf"] = "セキュリティエラー：不正なリクエストです。もう一度お試しください。";
     } else {
-    // 名前の検証
-    if (empty($_POST["username"])) {
-        $error_message["username"] = "お名前を入力してください";
-    } else {
-        $username = htmlspecialchars($_POST["username"], ENT_QUOTES, "UTF-8");
-    }
-           }
-    
-    // メールアドレスの検証
-    if (empty($_POST["email"])) {
-        $error_message["email"] = "メールアドレスを入力してください";
-    } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-        $error_message["email"] = "有効なメールアドレスを入力してください";
-    } else {
-        $email = htmlspecialchars($_POST["email"], ENT_QUOTES, "UTF-8");
-        
-        // 他のユーザーと重複していないか確認（自分自身は除く）
-        $check_email = "SELECT * FROM users WHERE email = ? AND id != ?";
-        $stmt = $conn->prepare($check_email);
-        $stmt->bind_param("si", $email, $_SESSION['user_id']);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $error_message["email"] = "このメールアドレスは既に使用されています";
-        }
-    }
-    
-    // パスワードの検証（入力された場合のみ）
-    $password_updated = false;
-    if (!empty($_POST["password"])) {
-        if (strlen($_POST["password"]) < 8) {
-            $error_message["password"] = "パスワードは8文字以上にしてください";
+        // 名前の検証
+        if (empty($_POST["username"])) {
+            $error_message["username"] = "お名前を入力してください";
         } else {
-            $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
-            $password_updated = true;
+            $username = htmlspecialchars($_POST["username"], ENT_QUOTES, "UTF-8");
         }
-    }
-    
-    // エラーがなければ更新処理
-    if (empty($error_message)) {
-        // トランザクション開始
-        $conn->begin_transaction();
         
-        try {
-            // ユーザー情報の更新
-            if ($password_updated) {
-                // パスワードも更新する場合
-                $update_sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
-                $stmt = $conn->prepare($update_sql);
-                $stmt->bind_param("sssi", $username, $email, $password, $_SESSION['user_id']);
-            } else {
-                // パスワードは更新しない場合
-                $update_sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
-                $stmt = $conn->prepare($update_sql);
-                $stmt->bind_param("ssi", $username, $email, $_SESSION['user_id']);
-            }
-            $stmt->execute();
+        // メールアドレスの検証
+        if (empty($_POST["email"])) {
+            $error_message["email"] = "メールアドレスを入力してください";
+        } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
+            $error_message["email"] = "有効なメールアドレスを入力してください";
+        } else {
+            $email = htmlspecialchars($_POST["email"], ENT_QUOTES, "UTF-8");
             
-            // 更新履歴の記録
-            //$update_type = "profile_update";
-            //$log_sql = "INSERT INTO user_updates (user_id, update_type) VALUES (?, ?)";
-            //$stmt = $conn->prepare($log_sql);
-            //$stmt->bind_param("is", $_SESSION['user_id'], $update_type);
-            //$stmt->execute();
-            
-            // コミット
-            $conn->commit();
-            
-            // セッション情報も更新
-            $_SESSION['username'] = $username;
-            $_SESSION['email'] = $email;
-            
-            $success_message = "会員情報を更新しました";
-            
-            // 最新のユーザーデータを再取得
-            $sql = "SELECT * FROM users WHERE id = ?";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("i", $_SESSION['user_id']);
+            // 他のユーザーと重複していないか確認（自分自身は除く）
+            $check_email = "SELECT * FROM users WHERE email = ? AND id != ?";
+            $stmt = $conn->prepare($check_email);
+            $stmt->bind_param("si", $email, $_SESSION['user_id']);
             $stmt->execute();
             $result = $stmt->get_result();
-            $user_data = $result->fetch_assoc();
+            if ($result->num_rows > 0) {
+                $error_message["email"] = "このメールアドレスは既に使用されています";
+            }
+        }
+        
+        // パスワードの検証（入力された場合のみ）
+        $password_updated = false;
+        if (!empty($_POST["password"])) {
+            if (strlen($_POST["password"]) < 8) {
+                $error_message["password"] = "パスワードは8文字以上にしてください";
+            } else {
+                $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+                $password_updated = true;
+            }
+        }
+        
+        // エラーがなければ更新処理
+        if (empty($error_message)) {
+            // トランザクション開始
+            $conn->begin_transaction();
             
-        } catch (Exception $e) {
-            // エラー発生時はロールバック
-            $conn->rollback();
-            $error_message["db"] = "更新に失敗しました: " . $e->getMessage();
+            try {
+                // ユーザー情報の更新
+                if ($password_updated) {
+                    // パスワードも更新する場合
+                    $update_sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
+                    $stmt = $conn->prepare($update_sql);
+                    $stmt->bind_param("sssi", $username, $email, $password, $_SESSION['user_id']);
+                } else {
+                    // パスワードは更新しない場合
+                    $update_sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+                    $stmt = $conn->prepare($update_sql);
+                    $stmt->bind_param("ssi", $username, $email, $_SESSION['user_id']);
+                }
+                $stmt->execute();
+                
+                // コミット
+                $conn->commit();
+                
+                // セッション情報も更新
+                $_SESSION['username'] = $username;
+                $_SESSION['email'] = $email;
+                
+                $success_message = "会員情報を更新しました";
+                
+                // 最新のユーザーデータを再取得
+                $sql = "SELECT * FROM users WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("i", $_SESSION['user_id']);
+                $stmt->execute();
+                $result = $stmt->get_result();
+                $user_data = $result->fetch_assoc();
+                
+            } catch (Exception $e) {
+                // エラー発生時はロールバック
+                $conn->rollback();
+                $error_message["db"] = "更新に失敗しました: " . $e->getMessage();
+            }
         }
     }
 }
@@ -163,6 +156,9 @@ include 'header.php';
         
         <div class="edit-profile-form">
             <form method="POST" action="">
+   <!-- 隠してCSRFトークンを追加 -->
+   <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
                 <div class="form-group">
                     <label for="username">お名前</label>
                     <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user_data['username']); ?>" required>
