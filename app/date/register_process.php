@@ -19,15 +19,11 @@ if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_tok
 
 // エラーメッセージ配列
 $error_message = array();
-$escaped = array();
 
-// 入力値の検証とエスケープ処理
+// 入力値の検証
 // 名前入力チェック
 if (empty($_POST["username"])) {
     $error_message["username"] = "お名前を入力してください";
-} else {
-    // エスケープ処理
-    $escaped["username"] = htmlspecialchars($_POST["username"], ENT_QUOTES, "UTF-8");
 }
 
 // メールアドレス入力チェック
@@ -36,9 +32,6 @@ if (empty($_POST["email"])) {
 } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
     $error_message["email"] = "有効なメールアドレスを入力してください";
 } else {
-    // エスケープ処理
-    $escaped["email"] = htmlspecialchars($_POST["email"], ENT_QUOTES, "UTF-8");
-    
     // メールアドレスの重複チェック
     $check_email = "SELECT * FROM users WHERE email = ?";
     $stmt = $conn->prepare($check_email);
@@ -55,9 +48,6 @@ if (empty($_POST["password"])) {
     $error_message["password"] = "パスワードを設定してください";
 } else if (strlen($_POST["password"]) < 8) {
     $error_message["password"] = "パスワードは8文字以上にしてください";
-} else {
-    // エスケープ処理
-    $escaped["password"] = htmlspecialchars($_POST["password"], ENT_QUOTES, "UTF-8");
 }
 
 // エラーがある場合は登録ページに戻る
@@ -72,9 +62,9 @@ if (!empty($error_message)) {
 }
 
 // エラーがなければデータベースに登録
-$username = $escaped["username"];
-$email = $escaped["email"];
-$password = password_hash($escaped["password"], PASSWORD_DEFAULT);
+$username = $_POST["username"];  // エスケープ不要
+$email = $_POST["email"];        // エスケープ不要
+$password = password_hash($_POST["password"], PASSWORD_DEFAULT);  // パスワードはハッシュ化
 
 // データベースに登録
 $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
