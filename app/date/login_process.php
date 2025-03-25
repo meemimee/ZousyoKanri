@@ -2,6 +2,13 @@
 session_start();
 include '../includes/connect.php';
 
+// CSRFトークンの検証
+if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+    $_SESSION['error'] = "セキュリティエラー：不正なリクエストです。もう一度お試しください。";
+    header("Location: ../pages/login.php");
+    exit;
+}
+
 // POSTデータの取得
 $email = $_POST['email'];
 $password = $_POST['password'];
@@ -22,6 +29,9 @@ if ($result->num_rows === 1) {
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['username'] = $user['username'];
         $_SESSION['email'] = $user['email'];
+        
+        // CSRFトークンを再生成
+        $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
         
         // マイページへリダイレクト
         header("Location: ../pages/top.php");

@@ -9,6 +9,11 @@ session_start();
 //ログイン済み？？
 require_once '../date/auth.php';
 
+// CSRFトークンの生成
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+
 // データベース接続
 include '../includes/connect.php';
 
@@ -34,12 +39,17 @@ if ($result->num_rows === 1) {
 
 // フォームが送信された場合の処理
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+       // CSRFトークンの検証
+       if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
+        $error_message["csrf"] = "セキュリティエラー：不正なリクエストです。もう一度お試しください。";
+    } else {
     // 名前の検証
     if (empty($_POST["username"])) {
         $error_message["username"] = "お名前を入力してください";
     } else {
         $username = htmlspecialchars($_POST["username"], ENT_QUOTES, "UTF-8");
     }
+           }
     
     // メールアドレスの検証
     if (empty($_POST["email"])) {

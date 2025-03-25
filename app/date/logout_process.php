@@ -1,28 +1,29 @@
 <?php
-// エラー表示（開発中のみ有効化）
+// エラー表示
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// セッションを開始
+// セッション開始
 session_start();
 
 // セッション変数を全て解除
 $_SESSION = array();
 
-// セッションクッキーも削除
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 42000,
-        $params["path"], $params["domain"],
-        $params["secure"], $params["httponly"]
-    );
+// セッションクッキーを削除
+if (isset($_COOKIE[session_name()])) {
+    setcookie(session_name(), '', time()-42000, '/');
 }
 
-// 最終的に、セッションを破棄
+// セッションを破棄
 session_destroy();
 
+// キャッシュ制御ヘッダーを送信
+header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+header("Cache-Control: post-check=0, pre-check=0", false);
+header("Pragma: no-cache");
+
 // ログインページにリダイレクト
-header("Location: ../../index.php");
-exit();
+header("Location: ../pages/login.php");
+exit;
 ?>

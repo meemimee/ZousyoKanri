@@ -1,10 +1,17 @@
 <?php
+// エラー表示
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
 session_start();
-// ログイン済みの場合はTOPリダイレクト(いらんかな〜迷い中)
-//if (isset($_SESSION['user_id'])) {
-    //header("Location: TOP.php");
-    //exit;
-//}
+
+// CSRFトークンを常に再生成
+$_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+
+// エラーメッセージの取得
+$error = isset($_SESSION['error']) ? $_SESSION['error'] : '';
+unset($_SESSION['error']); // エラーメッセージをセッションから削除
 ?>
 <!DOCTYPE html>
 <html lang="ja">
@@ -16,10 +23,15 @@ session_start();
 <body>
     <div class="login-container">
         <h1>ログイン</h1>
-        <?php if (isset($_SESSION['error'])): ?>
-            <div class="error"><?php echo $_SESSION['error']; unset($_SESSION['error']); ?></div>
+        
+        <?php if (!empty($error)): ?> <!-- $errorを使用する -->
+            <div class="error"><?php echo $error; ?></div>
         <?php endif; ?>
+        
         <form action="../date/login_process.php" method="POST">
+            <!-- CSRFトークンを追加 -->
+            <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+
             <div class="input-group">
                 <label for="email">メールアドレス</label>
                 <input type="email" id="email" name="email" required>

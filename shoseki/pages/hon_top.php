@@ -18,12 +18,12 @@ require_once '../date/auth.php';
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>My Books 〜ワシボン〜　へようこそ！</title>
+    <title>ほんのかんり</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <div class="login-container">
-        <h1>蔵書管理</h1>
+        <h1>書籍ページ</h1>
 
     </div>
 </body>
