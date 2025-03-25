@@ -27,10 +27,9 @@ require_once '../../app/date/auth.php';
 
 
         <p>書籍を検索するよ</p>
-        <input type="text" id="bookserch" name="bookserch"><button >検索</button>
+        <input type="text" id="bookserch" name="bookserch"><button>検索</button><button >クリア</button>
 
-        <p>一覧はこっからみれるよ</p>
-        <a href="hon_list.php">書籍の一覧</a>
+        <p>書籍の一覧</p>
 
     </div>
 </body>
