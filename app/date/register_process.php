@@ -83,7 +83,7 @@ $stmt->bind_param("sss", $username, $email, $password);
 
 if ($stmt->execute()) {
     // 登録成功
-    $_SESSION['message'] = "会員登録が完了しました！ようこそワシボンへ！";
+    $_SESSION['message'] = "会員登録が完了しました！ようこそ〜！";
     header("Location: ../../index.php"); // トップページにリダイレクト
     exit;
 } else {
