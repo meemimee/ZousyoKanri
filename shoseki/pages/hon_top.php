@@ -8,10 +8,10 @@ error_reporting(E_ALL);
 session_start();
 
 //へっだー
-include 'header.php';
+include '../../app/pages/header.php';
 
 //ログイン済み？？
-require_once '../date/auth.php';
+require_once '../../app/date/auth.php';
 
 ?>
 <!DOCTYPE html>
@@ -19,15 +19,22 @@ require_once '../date/auth.php';
 <head>
     <meta charset="UTF-8">
     <title>ほんのかんり</title>
-    <link rel="stylesheet" href="css/style.css">
+    <!--<link rel="stylesheet" href="css/style.css">いまはあとまわし-->
 </head>
 <body>
     <div class="login-container">
         <h1>書籍ページ</h1>
 
+
+        <p>書籍を検索するよ</p>
+        <input type="text" id="bookserch" name="bookserch"><button >検索</button>
+
+        <p>一覧はこっからみれるよ</p>
+        <a href="hon_list.php">書籍の一覧</a>
+
     </div>
 </body>
 </html>
 <?php
-include 'footer.php'; 
+include '../../app/pages/footer.php'; 
 ?>
