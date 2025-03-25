@@ -8,10 +8,10 @@ if (file_exists($env_file)) {
     $env_vars = parse_ini_file($env_file);
     if ($env_vars) {
         // .envから値とってくる
-        $servername = $env_vars['DB_HOST'] ?? 'localhost';
-        $username = $env_vars['DB_USER'] ?? 'root';
-        $password = $env_vars['DB_PASS'] ?? 'root';
-        $dbname = $env_vars['DB_NAME'] ?? 'zoushokanri';
+        $servername = $env_vars['DB_HOST'] ;
+        $username = $env_vars['DB_USER'] ;
+        $password = $env_vars['DB_PASS'] ;
+        $dbname = $env_vars['DB_NAME'] ;
     }
 } 
 
