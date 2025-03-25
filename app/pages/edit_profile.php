@@ -58,15 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $email = $_POST["email"];
             
-            // 他のユーザーと重複していないか確認（自分自身は除く）
-            $check_email = "SELECT * FROM users WHERE email = ? AND id != ?";
-            $stmt = $conn->prepare($check_email);
-            $stmt->bind_param("si", $email, $_SESSION['user_id']);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows > 0) {
-                $error_message["email"] = "このメールアドレスは既に使用されています";
-            }
+         // 他のユーザーと重複していないか確認（自分自身は除く）
+        $check_email = "SELECT 1 FROM users WHERE email = ? AND id != ? LIMIT 1";
+        $stmt = $conn->prepare($check_email);
+        $stmt->bind_param("si", $email, $_SESSION['user_id']);
+                $stmt->execute();
+        $result = $stmt->get_result();
+        if ($result->num_rows > 0) {
+            $error_message["email"] = "このメールアドレスは既に使用されています";
+        }
         }
         
         // パスワードの検証（入力された場合のみ）
