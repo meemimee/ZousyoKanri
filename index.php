@@ -29,10 +29,10 @@ unset($_SESSION['message']); // 一度表示したら削除
             </div>
             <?php endif; ?>
 
-        <button id="loginButton"><a href="./app/pages/login.php">ログイン</a></button>
-        <!-- 会員登録ボタン -->
-        <button id="registerButton"><a href="./app/pages/newregistr.php">会員登録</a></button>
-        <!-- register.php をインクルード -->
+        <div class="button-container">
+            <a href="app/pages/login.php" class="main-button login-button">ログイン</a>
+            <a href="app/pages/newregistr.php" class="main-button register-button">会員登録</a>
+        </div>
 
     </div>
 </body>
