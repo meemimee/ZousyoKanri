@@ -24,6 +24,7 @@ require_once '../date/auth.php';
 <body>
     <div class="login-container">
         <h1>蔵書管理</h1>
+        <a href="/zoushokanri/shoseki/pages/hon_top.php" class="nav-button" >書籍管理ページ</a>
 
     </div>
 </body>

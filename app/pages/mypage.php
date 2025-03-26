@@ -48,6 +48,7 @@ include 'header.php';
                 <p><strong>お名前：</strong> <?php echo htmlspecialchars($user_data['username']); ?></p>
                 <p><strong>メールアドレス：</strong> <?php echo htmlspecialchars($user_data['email']); ?></p>
                 <a href="edit_profile.php" class="nav-button" >会員情報を編集</a>
+                <a href="/zoushokanri/shoseki/pages/hon_top.php" class="nav-button" >書籍管理ページ</a>
             </div>
         </div>
 
