@@ -21,6 +21,7 @@ $conn = getDbConnection();
 $message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
 $error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
 
+
 // メッセージの取得方法を変更
 $show_success = isset($_SESSION['show_success']) ? $_SESSION['show_success'] : false;
 $raw_title = isset($_SESSION['raw_title']) ? $_SESSION['raw_title'] : '';
@@ -69,24 +70,19 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
 <body>
     <h1>書籍管理</h1>
     <div class="topcontiner">
-
-     <!-- メッセージ表示部分を修正 -->
-<?php function customEscape($text) {
-    // まず全てをエスケープ
-    $escaped = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+    <!-- メッセージ表示 -->
+    <?php if (!empty($message)): ?>
+        <div class="success-message" style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php endif; ?>
     
-    // その後、<>だけを元に戻す
-    $escaped = str_replace('&lt;', '<', $escaped);
-    $escaped = str_replace('&gt;', '>', $escaped);
-    
-    return $escaped;
-};?>
+    <?php if (!empty($error_message)): ?>
+        <div class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
 
-<?php if ($show_success): ?>
-    <div class="success-message" style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
-        書籍「<span><?php echo customEscape($raw_title); ?></span>」を登録しました！
-    </div>
-<?php endif; ?>
 
         <!-- 検索フォーム -->
         <div class="search-form">
