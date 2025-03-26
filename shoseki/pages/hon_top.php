@@ -15,6 +15,7 @@ require_once '../../app/date/auth.php';
 
 // データベース接続
 include '../../app/includes/connect.php';
+$conn = getDbConnection();
 
 // 検索条件の初期化
 $search_term = '';
@@ -108,7 +109,7 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
         
         <!-- 新規登録ボタン -->
         <div style="margin-top: 20px;">
-            <a href="add_book.php" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">新しい書籍を追加</a>
+            <a href="hon_add.php" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">新しい書籍を追加</a>
         </div>
     </div>
 </body>
