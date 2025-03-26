@@ -17,6 +17,15 @@ require_once '../../app/date/auth.php';
 include '../../app/includes/connect.php';
 $conn = getDbConnection();
 
+// メッセージの取得と削除
+$message = isset($_SESSION['message']) ? $_SESSION['message'] : '';
+$error_message = isset($_SESSION['error_message']) ? $_SESSION['error_message'] : '';
+
+// メッセージをいっかいだけ表示！
+unset($_SESSION['message']);
+unset($_SESSION['error_message']);
+
+
 // 検索条件の初期化
 $search_term = '';
 $where_clause = '';
@@ -49,10 +58,23 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>ほんのかんり</title>
+    <link rel="stylesheet" href="../shoseki.css">
 </head>
 <body>
-    <div class="container">
-        <h1>書籍管理</h1>
+    <h1>書籍管理</h1>
+    <div class="topcontiner">
+    <!-- メッセージ表示 -->
+    <?php if (!empty($message)): ?>
+        <div class="success-message" style="background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <?php echo htmlspecialchars($message); ?>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (!empty($error_message)): ?>
+        <div class="error-message" style="background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 15px; border-radius: 4px;">
+            <?php echo htmlspecialchars($error_message); ?>
+        </div>
+    <?php endif; ?>
 
         <!-- 検索フォーム -->
         <div class="search-form">
@@ -62,8 +84,9 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
                 <button type="button" onclick="location.href='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>'">クリア</button>
             </form>
         </div>
-
+    </div>
         <!-- 書籍一覧 -->
+        <div class="container">
         <h2>書籍の一覧</h2>
         
         <?php if (empty($books)): ?>
@@ -98,8 +121,8 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
                             <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['created']))); ?></td>
                             <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['updated']))); ?></td>
                             <td>
-                                <a href="edit_book.php?id=<?php echo $book['id']; ?>">編集</a> | 
-                                <a href="delete_book.php?id=<?php echo $book['id']; ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
+                                <a href="hon_edit.php?id=<?php echo $book['id']; ?>">編集</a> | 
+                                <a href="hon_delete.php?id=<?php echo $book['id']; ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
