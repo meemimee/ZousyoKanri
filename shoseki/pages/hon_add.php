@@ -48,22 +48,23 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $error_message["star"] = "評価は0～5の間で選択してください";
         }
         
-        // エラーがなければ登録処理
-        if (empty($error_message)) {
+          // エラーがなければ登録処理
+          if (empty($error_message)) {
             // 現在の日時を取得
             $current_time = date('Y-m-d H:i:s');
-            
+                
             // データベースに登録
             $sql = "INSERT INTO books (title, author, star, created, updated) VALUES (?, ?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("ssiss", $title, $author, $star, $current_time, $current_time);
             
             if ($stmt->execute()) {
-                $success_message = "書籍「" . htmlspecialchars($title) . "」を登録しました！";
-                // フォームをクリア
-                $title = "";
-                $author = "";
-                $star = 0;
+               // 成功メッセージをセッションに保存
+                $_SESSION['message'] = "書籍「" . htmlspecialchars($title) . "」を登録しました！";
+                    
+                // TOPページにリダイレクト
+                header("Location: hon_top.php");
+                exit;
             } else {
                 $error_message["db"] = "登録に失敗しました: " . $conn->error;
             }
