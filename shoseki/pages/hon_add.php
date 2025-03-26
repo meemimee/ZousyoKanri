@@ -59,19 +59,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $stmt->bind_param("ssiss", $title, $author, $star, $current_time, $current_time);
             
             if ($stmt->execute()) {
-                // 生のタイトルをセッションに保存
-                $_SESSION['raw_title'] = $title;
-                $_SESSION['show_success'] = true;
-                
-                // TOPページにリダイレクト
-                header("Location: hon_top.php");
-                exit;
-            } else {
-                $error_message["db"] = "登録に失敗しました: " . $conn->error;
-            }
-        }
-    }
-}
+                // 成功メッセージをセッションに保存
+                $_SESSION['message'] = "書籍「" . $title . "」を登録しました！";
+                     
+                 // TOPページにリダイレクト
+                 header("Location: hon_top.php");
+                 exit;
+             } else {
+                 $error_message["db"] = "登録に失敗しました: " . $conn->error;
+             }
+         }
+     }
+ }
 ?>
 <!DOCTYPE html>
 <html lang="ja">

@@ -45,7 +45,7 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $book_id);
 
 if ($stmt->execute()) {
-    $_SESSION['message'] = "書籍「" . htmlspecialchars($book_title) . "」を削除しました。";
+    $_SESSION['message'] = "書籍「" . $book_title . "」を削除しました。";
 } else {
     $_SESSION['error_message'] = "削除に失敗しました: " . $conn->error;
 }

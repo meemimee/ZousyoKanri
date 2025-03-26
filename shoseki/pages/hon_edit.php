@@ -84,7 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if ($stmt->execute()) {
                 // 成功メッセージをセッションに保存
-                $_SESSION['message'] = "書籍「" . htmlspecialchars($title) . "」の情報を更新しました！";
+                $_SESSION['message'] = "書籍「" . $title . "」の情報を更新しました！";
                 
                 // TOPページにリダイレクト
                 header("Location: hon_top.php");
