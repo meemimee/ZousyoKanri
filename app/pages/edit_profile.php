@@ -15,7 +15,8 @@ if (!isset($_SESSION['csrf_token'])) {
 }
 
 // データベース接続
-include '../includes/connect.php';
+require_once '../includes/connect.php';
+$conn = getDbConnection();
 
 // エラーと成功メッセージの初期化
 $error_message = array();
@@ -187,4 +188,5 @@ include 'header.php';
 <?php
 // フッターを読み込む
 include 'footer.php';
+$conn->close();
 ?>

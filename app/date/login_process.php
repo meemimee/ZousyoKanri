@@ -1,6 +1,7 @@
 <?php
 session_start();
-include '../includes/connect.php';
+require_once '../includes/connect.php';
+$conn = getDbConnection();
 
 // CSRFトークンの検証
 if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {

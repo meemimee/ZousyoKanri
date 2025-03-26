@@ -10,7 +10,8 @@ session_start();
 require_once '../date/auth.php';
 
 // データベース接続
-include '../includes/connect.php';
+require_once '../includes/connect.php';
+$conn = getDbConnection();
 
 // ユーザーデータを取得
 $sql = "SELECT * FROM users WHERE id = ?";
@@ -56,4 +57,5 @@ include 'header.php';
 </html>
 <?php
 include 'footer.php'; 
+$conn->close();
 ?>

@@ -5,7 +5,8 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 // セッション開始
 session_start();
-include '../includes/connect.php'; 
+require_once '../includes/connect.php';
+$conn = getDbConnection();
 
 // CSRFトークンの生成
 if (!isset($_SESSION['csrf_token'])) {
@@ -19,7 +20,9 @@ $old_input = isset($_SESSION['old_input']) ? $_SESSION['old_input'] : array();
 // セッションから一度取り出したら削除
 unset($_SESSION['error_message']);
 unset($_SESSION['old_input']);
+
 ?>
+
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -60,3 +63,8 @@ unset($_SESSION['old_input']);
     </div>
 </body>
 </html>
+
+<?php
+include 'footer.php'; 
+$conn->close();
+?>
