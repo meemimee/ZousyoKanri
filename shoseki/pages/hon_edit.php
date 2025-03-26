@@ -54,7 +54,7 @@ $book = $result->fetch_assoc();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // CSRFトークンの検証
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        $error_message["csrf"] = "セキュリティエラー：不正なリクエストです。もう一度お試しください。";
+        $error_message["csrf"] = "エラーだねもっかいやって。";
     } else {
         // タイトルの検証
         if (empty($_POST["title"])) {
