@@ -6,6 +6,12 @@ error_reporting(E_ALL);
 
 session_start();
 
+// ログイン済みだったら通ってよし
+if (isset($_SESSION['user_id']) && !empty($_SESSION['user_id'])) {
+    header("Location: top.php");
+    exit;
+}
+
 // CSRFトークンを常に再生成
 $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 
