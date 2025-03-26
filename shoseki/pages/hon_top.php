@@ -4,36 +4,116 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-//せっしょん
+//セッション
 session_start();
 
-//へっだー
+//ヘッダー
 include '../../app/pages/header.php';
 
 //ログイン済み？？
 require_once '../../app/date/auth.php';
 
+// データベース接続
+include '../../app/includes/connect.php';
+
+// 検索条件の初期化
+$search_term = '';
+$where_clause = '';
+$params = [];
+$param_types = '';
+
+// 検索処理
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['search']) && !empty($_GET['search'])) {
+    $search_term = $_GET['search'];
+    $where_clause = "WHERE title LIKE ? OR author LIKE ?";
+    $search_param = "%" . $search_term . "%";
+    $params = [$search_param, $search_param];
+    $param_types = "ss"; // 2つの文字列パラメータ
+}
+
+// 書籍データの取得
+$sql = "SELECT id, title, author, star, created, updated FROM books $where_clause ORDER BY updated DESC";
+$stmt = $conn->prepare($sql);
+
+if (!empty($params)) {
+    $stmt->bind_param($param_types, ...$params);
+}
+
+$stmt->execute();
+$result = $stmt->get_result();
+$books = $result->fetch_all(MYSQLI_ASSOC);
 ?>
 <!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
     <title>ほんのかんり</title>
-    <!--<link rel="stylesheet" href="css/style.css">いまはあとまわし-->
 </head>
 <body>
-    <div class="login-container">
-        <h1>書籍ページ</h1>
+    <div class="container">
+        <h1>書籍管理</h1>
 
+        <!-- 検索フォーム -->
+        <div class="search-form">
+            <form method="GET" action="">
+                <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search_term); ?>" placeholder="タイトルまたは著者名で検索">
+                <button type="submit">検索</button>
+                <button type="button" onclick="location.href='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>'">クリア</button>
+            </form>
+        </div>
 
-        <p>書籍を検索するよ</p>
-        <input type="text" id="bookserch" name="bookserch"><button>検索</button><button >クリア</button>
-
-        <p>書籍の一覧</p>
-
+        <!-- 書籍一覧 -->
+        <h2>書籍の一覧</h2>
+        
+        <?php if (empty($books)): ?>
+            <p class="no-books">書籍が見つかりません。</p>
+        <?php else: ?>
+            <table class="book-list">
+                <thead>
+                    <tr>
+                        <th>タイトル</th>
+                        <th>著者</th>
+                        <th>評価</th>
+                        <th>登録日</th>
+                        <th>更新日</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php foreach ($books as $book): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($book['title']); ?></td>
+                            <td><?php echo htmlspecialchars($book['author'] ?? '不明'); ?></td>
+                            <td>
+                                <div class="star-rating">
+                                    <?php 
+                                    $rating = intval($book['star'] ?? 0);
+                                    for ($i = 1; $i <= 5; $i++) {
+                                        echo ($i <= $rating) ? '★' : '☆';
+                                    }
+                                    ?>
+                                </div>
+                            </td>
+                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['created']))); ?></td>
+                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['updated']))); ?></td>
+                            <td>
+                                <a href="edit_book.php?id=<?php echo $book['id']; ?>">編集</a> | 
+                                <a href="delete_book.php?id=<?php echo $book['id']; ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
+                            </td>
+                        </tr>
+                    <?php endforeach; ?>
+                </tbody>
+            </table>
+        <?php endif; ?>
+        
+        <!-- 新規登録ボタン -->
+        <div style="margin-top: 20px;">
+            <a href="add_book.php" style="padding: 10px 15px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">新しい書籍を追加</a>
+        </div>
     </div>
 </body>
 </html>
 <?php
 include '../../app/pages/footer.php'; 
+$conn->close();
 ?>
