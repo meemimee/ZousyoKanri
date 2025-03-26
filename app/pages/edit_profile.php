@@ -42,43 +42,64 @@ if ($result->num_rows === 1) {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // CSRFトークンの検証
     if (!isset($_POST['csrf_token']) || $_POST['csrf_token'] !== $_SESSION['csrf_token']) {
-        $error_message["csrf"] = "セキュリティエラー：不正なリクエストです。もう一度お試しください。";
+        $error_message["csrf"] = "なんか失敗。もう一度お試しください。";
     } else {
-        // 名前の検証
-        if (empty($_POST["username"])) {
-            $error_message["username"] = "お名前を入力してください";
+        // 入力値を取得
+        $username = isset($_POST["username"]) ? trim($_POST["username"]) : "";
+        $email = isset($_POST["email"]) ? trim($_POST["email"]) : "";
+        $password = isset($_POST["password"]) ? $_POST["password"] : "";
+        
+        // 変更があるか確認
+        $has_changes = false;
+        
+        // ユーザー名の変更確認
+        if (!empty($username) && $username !== $user_data['username']) {
+            $has_changes = true;
         } else {
-            $username = $_POST["username"];
+            // 入力がない場合は現在の値を使用
+            $username = $user_data['username'];
         }
         
-        // メールアドレスの検証
-        if (empty($_POST["email"])) {
-            $error_message["email"] = "メールアドレスを入力してください";
-        } else if (!filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)) {
-            $error_message["email"] = "有効なメールアドレスを入力してください";
-        } else {
-            $email = $_POST["email"];
+        // メールアドレスの変更確認
+        if (!empty($email) && $email !== $user_data['email']) {
+            $has_changes = true;
             
-         // 他のユーザーと重複していないか確認（自分自身は除く）
-        $check_email = "SELECT 1 FROM users WHERE email = ? AND id != ? LIMIT 1";
-        $stmt = $conn->prepare($check_email);
-        $stmt->bind_param("si", $email, $_SESSION['user_id']);
+            // メールアドレスの形式チェック
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error_message["email"] = "有効なメールアドレスを入力してください";
+            } else {
+                // 他のユーザーと重複していないか確認
+                $check_email = "SELECT 1 FROM users WHERE email = ? AND id != ? LIMIT 1";
+                $stmt = $conn->prepare($check_email);
+                $stmt->bind_param("si", $email, $_SESSION['user_id']);
                 $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result->num_rows > 0) {
-            $error_message["email"] = "このメールアドレスは既に使用されています";
-        }
+                $result = $stmt->get_result();
+                if ($result->num_rows > 0) {
+                    $error_message["email"] = "このメールアドレスは既に使用されています";
+                }
+            }
+        } else {
+            // 入力がない場合は現在の値を使用
+            $email = $user_data['email'];
         }
         
-        // パスワードの検証（入力された場合のみ）
+        // パスワードの変更確認
         $password_updated = false;
-        if (!empty($_POST["password"])) {
-            if (strlen($_POST["password"]) < 8) {
+        if (!empty($password)) {
+            $has_changes = true;
+            
+            // パスワードの長さチェック
+            if (strlen($password) < 8) {
                 $error_message["password"] = "パスワードは8文字以上にしてください";
             } else {
-                $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $password_updated = true;
             }
+        }
+        
+        // 変更がない場合はエラー
+        if (!$has_changes) {
+            $error_message["general"] = "変更内容を入力してください";
         }
         
         // エラーがなければ更新処理
@@ -92,7 +113,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     // パスワードも更新する場合
                     $update_sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
                     $stmt = $conn->prepare($update_sql);
-                    $stmt->bind_param("sssi", $username, $email, $password, $_SESSION['user_id']);
+                    $stmt->bind_param("sssi", $username, $email, $hashed_password, $_SESSION['user_id']);
                 } else {
                     // パスワードは更新しない場合
                     $update_sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
@@ -156,24 +177,26 @@ include 'header.php';
         <?php endif; ?>
         
         <div class="edit-profile-form">
-            <form method="POST" action="">
-   <!-- 隠してCSRFトークンを追加 -->
-   <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
+        <form method="POST" action="">
+                <!-- 隠してCSRFトークンを追加 -->
+                <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 
                 <div class="form-group">
-                    <label for="username">お名前</label>
-                    <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user_data['username']); ?>" required>
+                    <label for="username">お名前 <span class="current-value">: <?php echo htmlspecialchars($user_data['username']); ?></span></label>
+                    <input type="text" id="username" name="username" placeholder="変更する場合は新しい名前を入力">
+                    <small>※変更がなければ空欄のままにしてください</small>
                 </div>
                 
                 <div class="form-group">
-                    <label for="email">メールアドレス</label>
-                    <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user_data['email']); ?>" required>
+                    <label for="email">メールアドレス <span class="current-value">: <?php echo htmlspecialchars($user_data['email']); ?></span></label>
+                    <input type="email" id="email" name="email" placeholder="変更する場合は新しいメールアドレスを入力">
+                    <small>※変更がなければ空欄のままにしてください</small>
                 </div>
                 
                 <div class="form-group">
-                    <label for="password">パスワード（変更する場合のみ入力）</label>
-                    <input type="password" id="password" name="password">
-                    <small>※8文字以上で入力してください</small>
+                    <label for="password">パスワード</label>
+                    <input type="password" id="password" name="password" placeholder="変更する場合は新しいパスワードを入力">
+                    <small>※変更がなければ空欄のままにしてください</small>
                 </div>
                 
                 <div class="form-buttons">
