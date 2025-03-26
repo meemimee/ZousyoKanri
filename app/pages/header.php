@@ -24,6 +24,8 @@ if (session_status() == PHP_SESSION_NONE) {
             padding: 10px 20px;
             background-color: #f8f9fa;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            width: 100%;
+            box-sizing: border-box;
         }
         
         .logo {
@@ -38,7 +40,8 @@ if (session_status() == PHP_SESSION_NONE) {
             gap: 15px;
         }
         
-        .nav-button {
+        /* ヘッダー内のボタン専用スタイル */
+        .header-button {
             padding: 8px 16px;
             background-color: #4CAF50;
             color: white;
@@ -47,10 +50,20 @@ if (session_status() == PHP_SESSION_NONE) {
             text-decoration: none;
             font-weight: 500;
             transition: background-color 0.3s;
+            margin: 0; /* マージンをリセット */
         }
         
-        .nav-button:hover {
+        .header-button:hover {
             background-color: #45a049;
+        }
+        
+        /* ヘッダー内のログアウトボタン */
+        .header-logout {
+            background-color: #d37919;
+        }
+        
+        .header-logout:hover {
+            background-color:rgb(230, 62, 16);
         }
     </style>
 </head>
@@ -58,8 +71,8 @@ if (session_status() == PHP_SESSION_NONE) {
     <header class="header">
         <a href="/zoushokanri/app/pages/top.php" class="logo">蔵書管理</a>
         <div class="nav-buttons">
-                <a href="/zoushokanri/app/pages/mypage.php" class="nav-button">マイページ</a>
-                <a href="/zoushokanri/app/date/logout_process.php" class="nav-button">ログアウト</a>
+            <a href="/zoushokanri/app/pages/mypage.php" class="header-button">マイページ</a>
+            <a href="/zoushokanri/app/date/logout_process.php" class="header-button header-logout">ログアウト</a>
         </div>
     </header>
     <div class="content">

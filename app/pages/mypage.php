@@ -47,12 +47,15 @@ include 'header.php';
                 <h2>会員情報</h2>
                 <p><strong>お名前：</strong> <?php echo htmlspecialchars($user_data['username']); ?></p>
                 <p><strong>メールアドレス：</strong> <?php echo htmlspecialchars($user_data['email']); ?></p>
-                <a href="edit_profile.php" class="nav-button" >会員情報を編集</a>
-                <a href="/zoushokanri/shoseki/pages/hon_top.php" class="nav-button" >書籍管理ページ</a>
+                <div class="button-container">
+                    <a href="edit_profile.php" class="nav-button">会員情報を編集</a>
+                    <a href="/zoushokanri/shoseki/pages/hon_top.php" class="nav-button">書籍管理ページ</a>
+                </div>
             </div>
         </div>
-
-        <a href="/zoushokanri/app/date/logout_process.php" class="nav-button">ログアウト</a>
+        <div class="logout-container">
+            <a href="/zoushokanri/app/date/logout_process.php" class="nav-button logout-button">ログアウト</a>
+        </div>
     </div>
 </body>
 </html>
