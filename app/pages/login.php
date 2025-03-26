@@ -24,7 +24,7 @@ unset($_SESSION['error']); // エラーメッセージをセッションから�
 <head>
     <meta charset="UTF-8">
     <title>ログイン - 蔵書へいきたいか〜！</title>
-    <!--<link rel="stylesheet" href="../../css/styles.css">-->
+    <link rel="stylesheet" href="/zoushokanri/css/style.css">
 </head>
 <body>
     <div class="login-container">
