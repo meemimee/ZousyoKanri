@@ -114,8 +114,8 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
                 <tbody>
                     <?php foreach ($books as $book): ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($book['title']); ?></td>
-                            <td><?php echo htmlspecialchars($book['author'] ?? '不明'); ?></td>
+                            <td><?php echo htmlspecialchars($book['title'], ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars($book['author'] ?? '不明', ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
                                 <div class="star-rating">
                                     <?php 
@@ -126,11 +126,11 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
                                     ?>
                                 </div>
                             </td>
-                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['created']))); ?></td>
-                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['updated']))); ?></td>
+                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['created'])), ENT_QUOTES, 'UTF-8'); ?></td>
+                            <td><?php echo htmlspecialchars(date('Y/m/d', strtotime($book['updated'])), ENT_QUOTES, 'UTF-8'); ?></td>
                             <td>
-                                <a href="hon_edit.php?id=<?php echo $book['id']; ?>">編集</a> | 
-                                <a href="hon_delete.php?id=<?php echo $book['id']; ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
+                            <a href="hon_edit.php?id=<?php echo htmlspecialchars($book['id'], ENT_QUOTES, 'UTF-8'); ?>">編集</a> | 
+                            <a href="hon_delete.php?id=<?php echo htmlspecialchars($book['id'], ENT_QUOTES, 'UTF-8'); ?>" onclick="return confirm('本当に削除しますか？');">削除</a>
                             </td>
                         </tr>
                     <?php endforeach; ?>
