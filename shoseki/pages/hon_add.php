@@ -77,7 +77,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>書籍登録</title>
-    <link rel="stylesheet" href="../shoseki.css">
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
     <div class="container">

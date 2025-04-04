@@ -101,12 +101,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>書籍編集 - ワシボン</title>
-    <link rel="stylesheet" href="../shoseki.css">
+    <link rel="stylesheet" href="../../css/style.css">
 </head>
 <body>
     <div class="container">
         <h1>書籍編集</h1>
-        
+
         <?php if (!empty($error_message)): ?>
             <div class="error-messages">
                 <?php foreach ($error_message as $message): ?>
