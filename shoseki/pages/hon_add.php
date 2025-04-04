@@ -96,12 +96,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             <div class="form-group">
                 <label for="title">タイトル <span style="color: red;">*</span></label>
-                <input type="text" id="title" name="title" value="<?php echo isset($title) ? htmlspecialchars($title) : ''; ?>" required>
+                <input type="text" id="title" name="title" value="<?php echo isset($title) ? htmlspecialchars($title, ENT_QUOTES, 'UTF-8') : ''; ?>" required>
             </div>
             
             <div class="form-group">
                 <label for="author">著者</label>
-                <input type="text" id="author" name="author" value="<?php echo isset($author) ? htmlspecialchars($author) : ''; ?>">
+                <input type="text" id="author" name="author" value="<?php echo isset($author) ? htmlspecialchars($author, ENT_QUOTES, 'UTF-8') : ''; ?>">
             </div>
             
             <div class="form-group">

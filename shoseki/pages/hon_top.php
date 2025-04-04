@@ -87,9 +87,9 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
         <!-- 検索フォーム -->
         <div class="search-form">
             <form method="GET" action="">
-                <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search_term); ?>" placeholder="タイトルまたは著者名で検索">
+                <input type="text" id="search" name="search" value="<?php echo htmlspecialchars($search_term, ENT_QUOTES, 'UTF-8'); ?>" placeholder="タイトルまたは著者名で検索">
                 <button type="submit">検索</button>
-                <button type="button" onclick="location.href='<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>'">クリア</button>
+                <button type="button" onclick="location.href='<?php echo htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, 'UTF-8'); ?>'">クリア</button>
             </form>
         </div>
     </div>
