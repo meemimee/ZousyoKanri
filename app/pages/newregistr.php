@@ -42,7 +42,7 @@ unset($_SESSION['old_input']);
             </div>
         <?php endif; ?>
         
-        <form action="/app/date/register_process.php" method="POST" id="registerForm">
+        <form action="/app/data/register_process.php" method="POST" id="registerForm">
             <!-- CSRFトークンを追加 -->
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
             

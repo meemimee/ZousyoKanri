@@ -72,7 +72,7 @@ if (session_status() == PHP_SESSION_NONE) {
         <a href="/zoushokanri/app/pages/top.php" class="logo">蔵書管理</a>
         <div class="nav-buttons">
             <a href="/zoushokanri/app/pages/mypage.php" class="header-button">マイページ</a>
-            <a href="/zoushokanri/app/date/logout_process.php" class="header-button header-logout">ログアウト</a>
+            <a href="/zoushokanri/app/data/logout_process.php" class="header-button header-logout">ログアウト</a>
         </div>
     </header>
     <div class="content">

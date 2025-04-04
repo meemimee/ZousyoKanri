@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 // ログインチェック
-require_once '../date/auth.php';
+require_once '../data/auth.php';
 
 // データベース接続
 require_once '../includes/connect.php';
@@ -25,7 +25,7 @@ if ($result->num_rows === 1) {
 } else {
     // ユーザーが見つからない場合の処理
     session_destroy();
-    header("Location: /zoushokanri/app/date/login_processe.php");
+    header("Location: /zoushokanri/app/data/login_processe.php");
     exit;
 }
 
@@ -54,7 +54,7 @@ include 'header.php';
             </div>
         </div>
         <div class="logout-container">
-            <a href="/zoushokanri/app/date/logout_process.php" class="nav-button logout-button">ログアウト</a>
+            <a href="/zoushokanri/app/data/logout_process.php" class="nav-button logout-button">ログアウト</a>
         </div>
     </div>
 </body>

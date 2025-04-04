@@ -11,7 +11,7 @@ session_start();
 include '../../app/pages/header.php';
 
 //ログイン済み？？
-require_once '../../app/date/auth.php';
+require_once '../../app/data/auth.php';
 
 // データベース接続
 include '../../app/includes/connect.php';

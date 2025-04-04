@@ -7,7 +7,7 @@ error_reporting(E_ALL);
 session_start();
 
 //ログイン済み？？
-require_once '../date/auth.php';
+require_once '../data/auth.php';
 
 // CSRFトークンの生成
 if (!isset($_SESSION['csrf_token'])) {

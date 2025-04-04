@@ -34,7 +34,7 @@ unset($_SESSION['error']); // エラーメッセージをセッションから�
             <div class="error"><?php echo $error; ?></div>
         <?php endif; ?>
         
-        <form action="../date/login_process.php" method="POST">
+        <form action="../data/login_process.php" method="POST">
             <!-- CSRFトークンを追加 -->
             <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['csrf_token']; ?>">
 

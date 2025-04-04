@@ -11,7 +11,7 @@ session_start();
 include 'header.php';
 
 //ログイン済み？？
-require_once '../date/auth.php';
+require_once '../data/auth.php';
 
 ?>
 <!DOCTYPE html>

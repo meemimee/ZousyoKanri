@@ -8,7 +8,7 @@ error_reporting(E_ALL);
 session_start();
 
 //ログイン済み？？
-require_once '../../app/date/auth.php';
+require_once '../../app/data/auth.php';
 
 // データベース接続
 require_once '../../app/includes/connect.php';
