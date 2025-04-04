@@ -24,7 +24,6 @@ if (!isset($_SESSION['csrf_token'])) {
 
 // エラーと成功メッセージの初期化
 $error_message = array();
-$success_message = "";
 
 // 書籍IDの取得と検証
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
@@ -107,12 +106,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <body>
     <div class="container">
         <h1>書籍編集</h1>
-        
-        <?php if (!empty($success_message)): ?>
-            <div class="success-message">
-                <?php echo $success_message; ?>
-            </div>
-        <?php endif; ?>
         
         <?php if (!empty($error_message)): ?>
             <div class="error-messages">

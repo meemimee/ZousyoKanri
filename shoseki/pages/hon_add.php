@@ -83,12 +83,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <div class="container">
         <h1>書籍登録</h1>
         
-        <?php if (!empty($success_message)): ?>
-            <div class="success-message">
-                <?php echo $success_message; ?>
-            </div>
-        <?php endif; ?>
-        
         <?php if (!empty($error_message)): ?>
             <div class="error-messages">
                 <?php foreach ($error_message as $message): ?>
