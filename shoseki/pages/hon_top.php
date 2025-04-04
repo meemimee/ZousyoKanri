@@ -65,7 +65,7 @@ $books = $result->fetch_all(MYSQLI_ASSOC);
 <head>
     <meta charset="UTF-8">
     <title>ほんのかんり</title>
-    <link rel="stylesheet" href="../../css/style.css">
+    <link rel="stylesheet" href="../../css/shoseki.css">
 </head>
 <body>
     <h1>書籍管理</h1>
