@@ -22,7 +22,7 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// エラーと成功メッセージの初期化
+// エラーメッセージの初期化
 $error_message = array();
 
 // 書籍IDの取得と検証

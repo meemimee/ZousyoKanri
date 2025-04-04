@@ -22,9 +22,8 @@ if (!isset($_SESSION['csrf_token'])) {
     $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
 }
 
-// エラーと成功メッセージの初期化
+// エラーの初期化
 $error_message = array();
-$success_message = "";
 
 // フォームが送信された場合の処理
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
